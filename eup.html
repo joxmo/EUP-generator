@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Jox</title>
+<body>
+  <header>
+    <h1>Jox Sandbox</h1>
+  </header>
+  <main>
+    <!--EPU Gen-->
+    <section>
+      <div class="accordion">
+        <div>
+          <form>
+            <button id="generate" type="button">Generate User</button>
+            <div id="output"></div>
+          </form>
+        </div>
+      
+        <script>
+          const generateButton = document.getElementById('generate');
+          const outputDiv = document.getElementById('output');
+      
+          generateButton.addEventListener('click', async () => {
+            const response = await fetch('https://randomuser.me/api');
+            const data = await response.json();
+            const username = data.results[0].login.username;
+            const domain = getRandomDomain();
+            const email = `${username}@${domain}`;
+            const password = generateRandomString(12);
+            outputDiv.innerHTML = `
+              <p>Username: ${username}</p>
+              <p>Email: ${email}</p>
+              <p>Password: ${password}</p>
+            `;
+          });
+      
+          function generateRandomString(length) {
+            const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let result = '';
+            for (let i = 0; i < length; i++) {
+              result += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return result;
+          }
+      
+          function getRandomDomain() {
+            const domains = ['gmail.com', 'outlook.com', 'yahoo.com', 'protonmail.com', 'icloud.com', 'me.com'];
+            return domains[Math.floor(Math.random() * domains.length)];
+          }
+        </script>
+        </div>
+    </section>
+  </main>
+</body>
+</html>
